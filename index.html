@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['DM Sans', 'sans-serif'] },
+          keyframes: {
+            slideIn:  { '0%': { transform: 'translateX(110%)', opacity: '0' }, '100%': { transform: 'translateX(0)', opacity: '1' } },
+            slideOut: { '0%': { transform: 'translateX(0)',    opacity: '1' }, '100%': { transform: 'translateX(110%)', opacity: '0' } },
+            shake:    { '0%,100%': { transform: 'translateX(0)' }, '20%,60%': { transform: 'translateX(-6px)' }, '40%,80%': { transform: 'translateX(6px)' } },
+          },
+          animation: {
+            slideIn:  'slideIn 0.35s cubic-bezier(0.16,1,0.3,1) forwards',
+            slideOut: 'slideOut 0.3s ease-in forwards',
+            shake:    'shake 0.4s ease',
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen flex items-center justify-center font-sans px-4">
+
+  <!-- Toast Container -->
+  <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Card -->
+  <div class="w-full max-w-sm bg-gray-900 border border-gray-800 rounded-2xl p-8 shadow-xl">
+
+    <!-- Logo -->
+    <div class="flex items-center gap-2 mb-7">
+      <div class="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center">
+        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <span class="font-semibold text-base tracking-tight">Portal EL</span>
+    </div>
+
+    <h1 class="text-2xl font-semibold tracking-tight mb-1">Selamat datang</h1>
+    <p class="text-sm text-gray-500 mb-6">Masuk untuk melanjutkan ke file Anda</p>
+
+    <!-- Username -->
+    <div class="mb-4">
+      <label class="block text-xs font-medium text-gray-500 uppercase tracking-widest mb-1.5">Username</label>
+      <input id="username" type="text" placeholder="Masukkan username" autocomplete="username"
+        class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-gray-100 placeholder-gray-600 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"/>
+    </div>
+
+    <!-- Password -->
+    <div class="mb-6">
+      <label class="block text-xs font-medium text-gray-500 uppercase tracking-widest mb-1.5">Password</label>
+      <div class="relative">
+        <input id="password" type="password" placeholder="Masukkan password" autocomplete="current-password"
+          class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 pr-10 text-sm text-gray-100 placeholder-gray-600 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"/>
+        <button id="eyeBtn" type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition">
+          <svg id="eyeIcon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Button -->
+    <button id="btnLogin" class="w-full bg-blue-500 hover:bg-blue-400 active:scale-95 text-white font-semibold text-sm rounded-lg py-2.5 transition disabled:opacity-50 disabled:cursor-not-allowed">
+      <span id="btnText">Masuk</span>
+      <span id="btnSpinner" class="hidden">
+        <svg class="w-4 h-4 animate-spin mx-auto" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+        </svg>
+      </span>
+    </button>
+
+  </div>
+
+  <!-- Success Overlay -->
+  <div id="overlay" class="hidden fixed inset-0 bg-gray-950/90 z-40 flex flex-col items-center justify-center gap-3">
+    <div class="w-14 h-14 rounded-full border border-green-500 bg-green-500/10 flex items-center justify-center">
+      <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <p id="overlayTitle" class="text-lg font-semibold"></p>
+    <p id="overlaySub" class="text-sm text-gray-500"></p>
+  </div>
+
+  <script>
+    // ============================================================
+    //  KONFIGURASI AKUN & REDIRECT — Edit sesuai kebutuhan
+    // ============================================================
+    const USERS = [
+      {
+        username: 'drive',
+        password: 'el123',
+        role: 'Drive',
+        redirectUrl: 'https://drive.google.com/drive/u/0/folders/1rIu5Tj0AwDbfq8xQn2GxoE9WN8GJ8aeL'
+      },
+      {
+        username: 'spreadsheet',
+        password: 'el123',
+        role: 'Spreadsheet',
+        redirectUrl: 'https://docs.google.com/spreadsheets/d/1laLLyOyBqSpvNA-Wz31LWgQZ0N4szwh8s09uULEwPXw/edit'
+      },
+    ];
+    // ============================================================
+
+    const usernameEl = document.getElementById('username');
+    const passwordEl = document.getElementById('password');
+    const btnLogin   = document.getElementById('btnLogin');
+    const overlay    = document.getElementById('overlay');
+    const toastContainer = document.getElementById('toastContainer');
+
+    // ── Toast notification ──────────────────────────────────────
+    function showToast(type, title, message) {
+      const isError   = type === 'error';
+      const isSuccess = type === 'success';
+
+      const colors = isError
+        ? { wrap: 'bg-red-950 border-red-800', icon: 'text-red-400 bg-red-900', title: 'text-red-300', msg: 'text-red-500' }
+        : isSuccess
+          ? { wrap: 'bg-green-950 border-green-800', icon: 'text-green-400 bg-green-900', title: 'text-green-300', msg: 'text-green-500' }
+          : { wrap: 'bg-yellow-950 border-yellow-800', icon: 'text-yellow-400 bg-yellow-900', title: 'text-yellow-300', msg: 'text-yellow-500' };
+
+      const iconPath = isError
+        ? '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>'
+        : isSuccess
+          ? '<polyline points="20 6 9 17 4 12"/>'
+          : '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>';
+
+      const toast = document.createElement('div');
+      toast.className = `pointer-events-auto flex items-start gap-3 border rounded-xl px-4 py-3 shadow-xl w-72 animate-slideIn ${colors.wrap}`;
+      toast.innerHTML = `
+        <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${colors.icon}">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">${iconPath}</svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-semibold ${colors.title}">${title}</p>
+          <p class="text-xs mt-0.5 ${colors.msg}">${message}</p>
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-gray-600 hover:text-gray-400 flex-shrink-0 mt-0.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>`;
+
+      toastContainer.appendChild(toast);
+
+      // Auto dismiss
+      setTimeout(() => {
+        toast.style.animation = 'none';
+        toast.classList.add('animate-slideOut');
+        toast.addEventListener('animationend', () => toast.remove());
+      }, 3500);
+    }
+
+    // ── Shake card on error ─────────────────────────────────────
+    function shakeCard() {
+      const card = document.querySelector('.rounded-2xl');
+      card.classList.add('animate-shake');
+      card.addEventListener('animationend', () => card.classList.remove('animate-shake'), { once: true });
+    }
+
+    // ── Toggle password visibility ──────────────────────────────
+    let showPass = false;
+    document.getElementById('eyeBtn').addEventListener('click', () => {
+      showPass = !showPass;
+      passwordEl.type = showPass ? 'text' : 'password';
+      document.getElementById('eyeIcon').innerHTML = showPass
+        ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>'
+        : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+    });
+
+    // ── Login logic ─────────────────────────────────────────────
+    function doLogin() {
+      const uname = usernameEl.value.trim();
+      const pass  = passwordEl.value;
+
+      if (!uname && !pass) {
+        shakeCard();
+        showToast('error', 'Form kosong', 'Username dan password wajib diisi.');
+        return;
+      }
+      if (!uname) {
+        shakeCard();
+        showToast('error', 'Username kosong', 'Silakan masukkan username Anda.');
+        usernameEl.focus();
+        return;
+      }
+      if (!pass) {
+        shakeCard();
+        showToast('error', 'Password kosong', 'Silakan masukkan password Anda.');
+        passwordEl.focus();
+        return;
+      }
+
+      // Loading state
+      btnLogin.disabled = true;
+      document.getElementById('btnText').classList.add('hidden');
+      document.getElementById('btnSpinner').classList.remove('hidden');
+
+      setTimeout(() => {
+        const match = USERS.find(u => u.username === uname && u.password === pass);
+
+        if (match) {
+          showToast('success', 'Login berhasil!', `Mengalihkan ke ${match.role}...`);
+          document.getElementById('overlayTitle').textContent = `Halo, ${match.role}!`;
+          document.getElementById('overlaySub').textContent = `Mengalihkan ke ${match.role}...`;
+          overlay.classList.remove('hidden');
+          setTimeout(() => window.location.href = match.redirectUrl, 1500);
+        } else {
+          // Reset button
+          btnLogin.disabled = false;
+          document.getElementById('btnText').classList.remove('hidden');
+          document.getElementById('btnSpinner').classList.add('hidden');
+
+          shakeCard();
+
+          // Cek username ada atau tidak untuk pesan lebih spesifik
+          const userExists = USERS.find(u => u.username === uname);
+          if (userExists) {
+            showToast('error', 'Password salah', 'Password yang kamu masukkan tidak sesuai.');
+          } else {
+            showToast('error', 'Username tidak ditemukan', 'Periksa kembali username kamu.');
+          }
+
+          passwordEl.value = '';
+          passwordEl.focus();
+        }
+      }, 800);
+    }
+
+    btnLogin.addEventListener('click', doLogin);
+    [usernameEl, passwordEl].forEach(el => {
+      el.addEventListener('keydown', e => e.key === 'Enter' && doLogin());
+    });
+  </script>
+</body>
+</html>
