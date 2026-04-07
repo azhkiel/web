@@ -6,7 +6,6 @@
   <title>LinkJar — Simpan Linkmu</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-  <!-- Ganti Lucide dengan Font Awesome yang lebih ringan dan sudah di-cache -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
 
@@ -96,7 +95,6 @@
       min-height: 100vh;
     }
 
-    /* Blobs */
     .blob {
       position: fixed;
       border-radius: 50%;
@@ -105,7 +103,6 @@
       animation: float 7s ease-in-out infinite;
     }
 
-    /* Duolingo button press */
     .btn-sky {
       background: #0ea5e9;
       box-shadow: 0 5px 0 #0369a1;
@@ -121,8 +118,15 @@
     }
     .btn-green:hover  { transform: translateY(-2px); box-shadow: 0 7px 0 #3f9100; }
     .btn-green:active { transform: translateY(3px);  box-shadow: 0 2px 0 #3f9100; }
+    
+    .btn-red {
+      background: #FF4B4B;
+      box-shadow: 0 5px 0 #cc2222;
+      transition: transform 0.08s, box-shadow 0.08s;
+    }
+    .btn-red:hover  { transform: translateY(-2px); box-shadow: 0 7px 0 #cc2222; }
+    .btn-red:active { transform: translateY(3px);  box-shadow: 0 2px 0 #cc2222; }
 
-    /* Card */
     .link-card {
       transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s;
     }
@@ -131,17 +135,14 @@
       box-shadow: 0 18px 36px rgba(14,165,233,0.15);
     }
 
-    /* Focus glow */
     .input-sky:focus {
       outline: none;
       border-color: #38bdf8;
       box-shadow: 0 0 0 3px rgba(56,189,248,0.3);
     }
 
-    /* Shake */
     .is-shaking { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
 
-    /* Dot loader */
     .dot-pulse span {
       display: inline-block;
       width: 7px; height: 7px;
@@ -153,33 +154,27 @@
     .dot-pulse span:nth-child(2) { animation-delay: 0.18s; }
     .dot-pulse span:nth-child(3) { animation-delay: 0.36s; }
 
-    /* Scrollbar */
     ::-webkit-scrollbar       { width: 5px; }
     ::-webkit-scrollbar-track { background: #e0f2fe; border-radius: 8px; }
     ::-webkit-scrollbar-thumb { background: #7dd3fc; border-radius: 8px; }
 
-    /* Backdrop blur for modals */
     .modal-bg {
       backdrop-filter: blur(10px);
       background: rgba(7, 89, 133, 0.12);
     }
 
-    /* Logo icon bg */
     .logo-bg {
       background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
     }
 
-    /* Toast slide */
     .toast-in { animation: slideUp 0.3s ease-out; }
 
-    /* Domain pill */
     .domain-pill {
       font-size: 0.6rem;
       letter-spacing: 0.07em;
       text-transform: uppercase;
     }
 
-    /* Streak pill */
     .streak-pill {
       background: linear-gradient(135deg, #FFC800 0%, #ff9500 100%);
     }
@@ -195,9 +190,7 @@
   <div class="blob w-72 h-72 bg-sky-400 opacity-15 bottom-[5%] right-[-3rem]" style="animation-delay:2.5s"></div>
   <div class="blob w-52 h-52 bg-sky-200 opacity-20 top-[45%] left-[3%]" style="animation-delay:5s"></div>
 
-  <!-- ======================================================= -->
-  <!-- TOASTS                                                   -->
-  <!-- ======================================================= -->
+  <!-- TOASTS -->
   <div class="fixed top-4 right-4 z-[200] flex flex-col gap-2 pointer-events-none">
     <template x-for="toast in toasts" :key="toast.id">
       <div
@@ -218,9 +211,7 @@
     </template>
   </div>
 
-  <!-- ======================================================= -->
-  <!-- LOGIN MODAL                                              -->
-  <!-- ======================================================= -->
+  <!-- LOGIN MODAL -->
   <div
     x-show="!isLoggedIn"
     x-transition:enter="transition ease-out duration-300"
@@ -236,10 +227,8 @@
       :class="loginShake ? 'is-shaking' : ''"
       class="bg-white rounded-4xl shadow-2xl p-8 w-full max-w-sm mx-4 relative overflow-hidden"
     >
-      <!-- Top accent -->
       <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-sky-400 via-sky-500 to-sky-400 rounded-t-4xl"></div>
 
-      <!-- Logo area -->
       <div class="flex flex-col items-center mb-7 mt-1">
         <div class="logo-bg w-16 h-16 rounded-3xl flex items-center justify-center shadow-lg mb-3 animate-float">
           <i class="fas fa-archive text-white text-2xl"></i>
@@ -248,9 +237,7 @@
         <p class="text-sky-400 font-semibold text-sm mt-1">Simpan semua linkmu di satu tempat</p>
       </div>
 
-      <!-- Fields -->
       <div class="space-y-4">
-        <!-- Username -->
         <div>
           <label class="block text-sky-700 font-bold text-sm mb-1.5">Username</label>
           <div class="relative">
@@ -265,7 +252,6 @@
           </div>
         </div>
 
-        <!-- Password -->
         <div>
           <label class="block text-sky-700 font-bold text-sm mb-1.5">Password</label>
           <div class="relative">
@@ -288,7 +274,6 @@
           </div>
         </div>
 
-        <!-- Submit -->
         <button
           @click="login()"
           :disabled="loginLoading"
@@ -313,12 +298,10 @@
     </div>
   </div>
 
-  <!-- ======================================================= -->
-  <!-- MODAL TAMBAH LINK                                        -->
-  <!-- ======================================================= -->
+  <!-- MODAL TAMBAH/EDIT LINK -->
   <div
-    x-show="showAddModal"
-    @click.self="showAddModal = false"
+    x-show="showLinkModal"
+    @click.self="closeLinkModal()"
     x-transition:enter="transition ease-out duration-200"
     x-transition:enter-start="opacity-0"
     x-transition:enter-end="opacity-100"
@@ -328,7 +311,7 @@
     class="fixed inset-0 z-50 flex items-center justify-center modal-bg"
   >
     <div
-      x-show="showAddModal"
+      x-show="showLinkModal"
       x-transition:enter="transition ease-out duration-250"
       x-transition:enter-start="opacity-0 scale-90 -translate-y-3"
       x-transition:enter-end="opacity-100 scale-100 translate-y-0"
@@ -339,19 +322,18 @@
     >
       <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-duo-green via-sky-400 to-sky-500 rounded-t-4xl"></div>
 
-      <!-- Header -->
       <div class="flex items-start justify-between mb-6 mt-1">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-sky-100 rounded-2xl flex items-center justify-center">
-            <i class="fas fa-link text-sky-500"></i>
+            <i class="fas" :class="isEditing ? 'fa-edit' : 'fa-link'"></i>
           </div>
           <div>
-            <h2 class="text-xl font-black text-sky-700">Tambah Link</h2>
-            <p class="text-sky-400 text-xs font-semibold">Simpan link favoritmu</p>
+            <h2 class="text-xl font-black text-sky-700" x-text="isEditing ? 'Edit Link' : 'Tambah Link'"></h2>
+            <p class="text-sky-400 text-xs font-semibold" x-text="isEditing ? 'Update link favoritmu' : 'Simpan link favoritmu'"></p>
           </div>
         </div>
         <button
-          @click="showAddModal = false"
+          @click="closeLinkModal()"
           class="w-8 h-8 rounded-xl hover:bg-sky-50 text-sky-300 hover:text-sky-500 transition-all flex items-center justify-center"
           type="button"
         >
@@ -360,7 +342,6 @@
       </div>
 
       <div class="space-y-4">
-        <!-- URL field -->
         <div>
           <label class="flex items-center gap-1.5 text-sky-700 font-bold text-sm mb-1.5">
             <i class="fas fa-globe text-xs"></i>
@@ -368,22 +349,20 @@
           </label>
           <input
             type="url"
-            x-model="addForm.link"
+            x-model="linkForm.link"
             placeholder="https://example.com"
             class="input-sky w-full px-4 py-3 border-2 border-sky-200 rounded-2xl font-semibold text-gray-700 placeholder-sky-200 bg-sky-50 transition-colors"
           />
-          <p x-show="urlError" class="flex items-center gap-1 text-duo-red text-xs font-bold mt-1.5" x-text="urlError">
-          </p>
+          <p x-show="urlError" class="flex items-center gap-1 text-duo-red text-xs font-bold mt-1.5" x-text="urlError"></p>
         </div>
 
-        <!-- Caption field -->
         <div>
           <label class="flex items-center gap-1.5 text-sky-700 font-bold text-sm mb-1.5">
             <i class="fas fa-i-cursor text-xs"></i>
             Caption
           </label>
           <textarea
-            x-model="addForm.caption"
+            x-model="linkForm.caption"
             placeholder="Ceritain dikit, ini link apa..."
             rows="3"
             class="input-sky w-full px-4 py-3 border-2 border-sky-200 rounded-2xl font-semibold text-gray-700 placeholder-sky-200 bg-sky-50 transition-colors resize-none"
@@ -391,10 +370,9 @@
           <p x-show="captionError" class="flex items-center gap-1 text-duo-red text-xs font-bold mt-1.5" x-text="captionError"></p>
         </div>
 
-        <!-- Buttons -->
         <div class="flex gap-3 pt-1">
           <button
-            @click="showAddModal = false"
+            @click="closeLinkModal()"
             class="flex-1 py-3 rounded-2xl border-2 border-sky-200 text-sky-500 font-black hover:bg-sky-50 transition-colors flex items-center justify-center gap-2"
             type="button"
           >
@@ -402,18 +380,18 @@
             Batal
           </button>
           <button
-            @click="addLink()"
-            :disabled="addLoading"
+            @click="saveLink()"
+            :disabled="linkLoading"
             class="btn-green flex-grow py-3 rounded-2xl text-white font-black flex items-center justify-center gap-2"
             type="button"
           >
-            <template x-if="addLoading">
+            <template x-if="linkLoading">
               <div class="dot-pulse text-white"><span></span><span></span><span></span></div>
             </template>
-            <template x-if="!addLoading">
+            <template x-if="!linkLoading">
               <span class="flex items-center gap-2">
-                <i class="fas fa-save"></i>
-                Simpan
+                <i class="fas" :class="isEditing ? 'fa-save' : 'fa-save'"></i>
+                <span x-text="isEditing ? 'Update' : 'Simpan'"></span>
               </span>
             </template>
           </button>
@@ -422,9 +400,56 @@
     </div>
   </div>
 
-  <!-- ======================================================= -->
-  <!-- DASHBOARD                                                -->
-  <!-- ======================================================= -->
+  <!-- MODAL KONFIRMASI HAPUS -->
+  <div
+    x-show="showDeleteModal"
+    @click.self="showDeleteModal = false"
+    x-transition:enter="transition ease-out duration-200"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    class="fixed inset-0 z-50 flex items-center justify-center modal-bg"
+  >
+    <div
+      x-show="showDeleteModal"
+      x-transition:enter="transition ease-out duration-250"
+      x-transition:enter-start="opacity-0 scale-90"
+      x-transition:enter-end="opacity-100 scale-100"
+      class="bg-white rounded-4xl shadow-2xl p-8 w-full max-w-sm mx-4 relative"
+    >
+      <div class="text-center">
+        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-trash-alt text-2xl text-duo-red"></i>
+        </div>
+        <h3 class="text-xl font-black text-gray-800 mb-2">Hapus Link?</h3>
+        <p class="text-gray-500 mb-6">Apakah kamu yakin ingin menghapus link ini? Tindakan ini tidak dapat dibatalkan.</p>
+        <div class="flex gap-3">
+          <button
+            @click="showDeleteModal = false"
+            class="flex-1 py-3 rounded-2xl border-2 border-gray-200 text-gray-500 font-black hover:bg-gray-50 transition-colors"
+          >
+            Batal
+          </button>
+          <button
+            @click="confirmDelete()"
+            :disabled="deleteLoading"
+            class="btn-red flex-1 py-3 rounded-2xl text-white font-black flex items-center justify-center gap-2"
+          >
+            <template x-if="deleteLoading">
+              <div class="dot-pulse text-white"><span></span><span></span><span></span></div>
+            </template>
+            <template x-if="!deleteLoading">
+              <span class="flex items-center gap-2">
+                <i class="fas fa-trash"></i>
+                Hapus
+              </span>
+            </template>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
   <div
     x-show="isLoggedIn"
     x-transition:enter="transition ease-out duration-400"
@@ -432,11 +457,8 @@
     x-transition:enter-end="opacity-100"
     class="min-h-screen"
   >
-    <!-- HEADER -->
     <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b-2 border-sky-100">
       <div class="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
-
-        <!-- Logo + User -->
         <div class="flex items-center gap-3">
           <div class="logo-bg w-9 h-9 rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
             <i class="fas fa-archive text-white text-sm"></i>
@@ -450,15 +472,12 @@
           </div>
         </div>
 
-        <!-- Right controls -->
         <div class="flex items-center gap-2">
-          <!-- Link count badge -->
           <div class="streak-pill flex items-center gap-1.5 px-3 py-1.5 rounded-xl shadow-sm">
             <i class="fas fa-bookmark text-white text-xs"></i>
             <span class="text-white font-black text-sm" x-text="links.length"></span>
           </div>
 
-          <!-- Logout -->
           <button
             @click="logout()"
             class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-100 text-sky-600 font-bold text-sm hover:bg-sky-200 transition-colors"
@@ -471,10 +490,7 @@
       </div>
     </header>
 
-    <!-- MAIN -->
     <main class="max-w-2xl mx-auto px-4 py-6">
-
-      <!-- Page title + Add button -->
       <div class="flex items-center justify-between mb-6">
         <div>
           <h2 class="text-2xl font-black text-sky-800">Link Kamu</h2>
@@ -493,7 +509,6 @@
         </button>
       </div>
 
-      <!-- Search -->
       <div x-show="links.length > 0" class="relative mb-5">
         <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-sky-300 text-sm"></i>
         <input
@@ -502,7 +517,6 @@
           placeholder="Cari link atau caption..."
           class="input-sky w-full pl-11 pr-4 py-3 border-2 border-sky-200 rounded-2xl font-semibold text-gray-700 placeholder-sky-200 bg-white transition-colors shadow-sm"
         />
-        <!-- Clear search -->
         <button
           x-show="searchQuery"
           @click="searchQuery = ''"
@@ -513,7 +527,6 @@
         </button>
       </div>
 
-      <!-- Loading -->
       <div x-show="loadingLinks" class="flex flex-col items-center py-16 gap-4">
         <div class="w-14 h-14 logo-bg rounded-3xl flex items-center justify-center shadow-lg">
           <i class="fas fa-spinner fa-spin text-white text-2xl"></i>
@@ -522,7 +535,6 @@
         <p class="text-sky-400 font-bold text-sm">Mengambil linkmu...</p>
       </div>
 
-      <!-- Empty State -->
       <div
         x-show="!loadingLinks && filteredLinks.length === 0 && links.length === 0"
         class="flex flex-col items-center py-16 gap-4 text-center animate-fade-in"
@@ -544,7 +556,6 @@
         </button>
       </div>
 
-      <!-- No search result -->
       <div
         x-show="!loadingLinks && filteredLinks.length === 0 && links.length > 0"
         class="flex flex-col items-center py-12 gap-3 text-center"
@@ -560,7 +571,7 @@
         </button>
       </div>
 
-      <!-- LINK CARDS -->
+      <!-- LINK CARDS dengan tombol Edit & Delete -->
       <div class="space-y-3.5">
         <template x-for="(item, index) in filteredLinks" :key="item.id || index">
           <div
@@ -569,21 +580,37 @@
             x-transition:enter-start="opacity-0 translate-y-3"
             x-transition:enter-end="opacity-100 translate-y-0"
           >
-            <!-- Left accent -->
             <div class="absolute left-0 top-5 bottom-5 w-1 bg-gradient-to-b from-sky-400 to-sky-200 rounded-r-full"></div>
 
             <div class="pl-4">
-              <!-- Caption -->
-              <p class="text-gray-800 font-bold text-[15px] mb-3 leading-snug" x-text="item.caption || '(Tanpa caption)'"></p>
+              <div class="flex items-start justify-between gap-2">
+                <p class="text-gray-800 font-bold text-[15px] mb-3 leading-snug flex-1" x-text="item.caption || '(Tanpa caption)'"></p>
+                
+                <!-- Action Buttons -->
+                <div class="flex items-center gap-1 flex-shrink-0">
+                  <button
+                    @click="openEditModal(item)"
+                    class="p-1.5 rounded-lg hover:bg-sky-50 text-sky-400 hover:text-sky-600 transition-colors"
+                    title="Edit link"
+                  >
+                    <i class="fas fa-edit text-sm"></i>
+                  </button>
+                  <button
+                    @click="openDeleteModal(item)"
+                    class="p-1.5 rounded-lg hover:bg-red-50 text-red-400 hover:text-red-600 transition-colors"
+                    title="Hapus link"
+                  >
+                    <i class="fas fa-trash-alt text-sm"></i>
+                  </button>
+                </div>
+              </div>
 
-              <!-- URL row -->
               <a
                 :href="item.link"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="flex items-center gap-2 group w-full"
               >
-                <!-- Favicon dengan lazy loading -->
                 <img
                   loading="lazy"
                   :src="getFaviconUrl(item.link)"
@@ -597,9 +624,7 @@
                 <i class="fas fa-external-link-alt text-sky-300 group-hover:text-sky-500 transition-colors text-xs flex-shrink-0"></i>
               </a>
 
-              <!-- Footer meta -->
               <div class="flex items-center justify-between mt-3 pt-2.5 border-t border-sky-50">
-                <!-- User -->
                 <div class="flex items-center gap-1.5">
                   <span class="flex w-5 h-5 bg-sky-100 rounded-full text-sky-400 items-center justify-center">
                     <i class="fas fa-user text-xs"></i>
@@ -607,7 +632,6 @@
                   <span class="text-sky-400 text-xs font-bold" x-text="item.username"></span>
                 </div>
 
-                <!-- Right meta -->
                 <div class="flex items-center gap-2">
                   <span
                     class="domain-pill bg-sky-50 text-sky-400 font-extrabold px-2 py-0.5 rounded-lg"
@@ -627,7 +651,6 @@
       <div class="h-20"></div>
     </main>
 
-    <!-- FAB mobile -->
     <button
       @click="openAddModal()"
       class="btn-sky fixed bottom-6 right-6 z-30 w-14 h-14 rounded-full text-white flex items-center justify-center sm:hidden"
@@ -638,12 +661,9 @@
     </button>
   </div>
 
-  <!-- ======================================================= -->
-  <!-- ALPINE.JS LOGIC (OPTIMIZED)                             -->
-  <!-- ======================================================= -->
   <script>
-    // ⚠️ Ganti dengan URL Google Apps Script kamu
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbyCiVTn-7agMzw3r7ywgVqYEgYUlP8TC8IOmWmL7c9mJuOUVoZ0wVOPVLRLcP6lgS4dDw/exec';
+    // Ganti dengan URL Google Apps Script kamu setelah deploy
+    const GAS_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
 
     function app() {
       return {
@@ -658,19 +678,22 @@
         links:        [],
         loadingLinks: false,
         searchQuery:  '',
-        showAddModal: false,
-
-        addForm:      { link: '', caption: '' },
-        addLoading:   false,
-        urlError:     '',
-        captionError: '',
+        
+        showLinkModal: false,
+        isEditing:     false,
+        editingId:     null,
+        linkForm:      { link: '', caption: '' },
+        linkLoading:   false,
+        urlError:      '',
+        captionError:  '',
+        
+        showDeleteModal: false,
+        deleteId:        null,
+        deleteLoading:   false,
 
         toasts:       [],
-        
-        // Cache untuk favicon
         faviconCache: {},
 
-        // ---- computed dengan debounce ----
         get filteredLinks() {
           if (!this.searchQuery.trim()) return this.links;
           const q = this.searchQuery.toLowerCase();
@@ -680,7 +703,6 @@
           );
         },
 
-        // ---- init - optimized ----
         init() {
           const saved = localStorage.getItem('linkjar_session');
           if (saved) {
@@ -695,7 +717,6 @@
           }
         },
 
-        // ---- login ----
         async login() {
           if (!this.loginForm.username.trim()) { this.showToast('Username tidak boleh kosong!', 'error'); this.shake(); return; }
           if (!this.loginForm.password.trim()) { this.showToast('Password tidak boleh kosong!',  'error'); this.shake(); return; }
@@ -759,7 +780,6 @@
           this.showToast('Sampai jumpa!', 'info');
         },
 
-        // ---- fetch links dengan timeout ----
         async fetchLinks() {
           if (GAS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') { this.loadDemoData(); return; }
           this.loadingLinks = true;
@@ -786,10 +806,33 @@
         },
 
         openAddModal() {
-          this.addForm     = { link:'', caption:'' };
-          this.urlError    = '';
-          this.captionError= '';
-          this.showAddModal= true;
+          this.isEditing = false;
+          this.editingId = null;
+          this.linkForm = { link: '', caption: '' };
+          this.urlError = '';
+          this.captionError = '';
+          this.showLinkModal = true;
+        },
+
+        openEditModal(item) {
+          this.isEditing = true;
+          this.editingId = item.id;
+          this.linkForm = { 
+            link: item.link, 
+            caption: item.caption 
+          };
+          this.urlError = '';
+          this.captionError = '';
+          this.showLinkModal = true;
+        },
+
+        closeLinkModal() {
+          this.showLinkModal = false;
+          this.linkForm = { link: '', caption: '' };
+          this.urlError = '';
+          this.captionError = '';
+          this.isEditing = false;
+          this.editingId = null;
         },
 
         validateURL(s) {
@@ -797,42 +840,127 @@
           catch { return false; }
         },
 
-        async addLink() {
-          this.urlError = ''; this.captionError = '';
+        async saveLink() {
+          this.urlError = '';
+          this.captionError = '';
           let ok = true;
-          if (!this.addForm.link.trim())                           { this.urlError     = 'URL tidak boleh kosong!';            ok = false; }
-          else if (!this.validateURL(this.addForm.link.trim()))   { this.urlError     = 'URL tidak valid (gunakan https://…)'; ok = false; }
-          if (!this.addForm.caption.trim())                        { this.captionError = 'Caption tidak boleh kosong!';        ok = false; }
+          if (!this.linkForm.link.trim()) {
+            this.urlError = 'URL tidak boleh kosong!';
+            ok = false;
+          } else if (!this.validateURL(this.linkForm.link.trim())) {
+            this.urlError = 'URL tidak valid (gunakan https://…)';
+            ok = false;
+          }
+          if (!this.linkForm.caption.trim()) {
+            this.captionError = 'Caption tidak boleh kosong!';
+            ok = false;
+          }
           if (!ok) return;
 
-          this.addLoading = true;
+          this.linkLoading = true;
 
           if (GAS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
             await new Promise(r => setTimeout(r, 500));
-            this.links.unshift({ id: Date.now(), timestamp: new Date().toISOString(), username: this.currentUser, link: this.addForm.link.trim(), caption: this.addForm.caption.trim() });
-            this.showAddModal = false;
-            this.addLoading   = false;
-            this.showToast('Link berhasil disimpan!', 'success');
+            if (this.isEditing) {
+              const index = this.links.findIndex(l => l.id == this.editingId);
+              if (index !== -1) {
+                this.links[index] = {
+                  ...this.links[index],
+                  link: this.linkForm.link.trim(),
+                  caption: this.linkForm.caption.trim(),
+                  timestamp: new Date().toISOString()
+                };
+              }
+            } else {
+              this.links.unshift({ 
+                id: Date.now(), 
+                timestamp: new Date().toISOString(), 
+                username: this.currentUser, 
+                link: this.linkForm.link.trim(), 
+                caption: this.linkForm.caption.trim() 
+              });
+            }
+            this.closeLinkModal();
+            this.linkLoading = false;
+            this.showToast(this.isEditing ? 'Link berhasil diupdate!' : 'Link berhasil disimpan!', 'success');
             return;
           }
 
           try {
-            const res  = await fetch(GAS_URL, {
-              method:  'POST',
+            const action = this.isEditing ? 'editLink' : 'addLink';
+            const payload = {
+              action: action,
+              username: this.currentUser,
+              link: this.linkForm.link.trim(),
+              caption: this.linkForm.caption.trim()
+            };
+            if (this.isEditing) {
+              payload.id = this.editingId;
+            }
+            
+            const res = await fetch(GAS_URL, {
+              method: 'POST',
               headers: { 'Content-Type': 'text/plain' },
-              body:    JSON.stringify({ action:'addLink', username: this.currentUser, link: this.addForm.link.trim(), caption: this.addForm.caption.trim() }),
+              body: JSON.stringify(payload),
             });
             const data = await res.json();
             if (data.status === 'success') {
-              this.showAddModal = false;
-              this.showToast('Link berhasil disimpan!', 'success');
+              this.closeLinkModal();
+              this.showToast(this.isEditing ? 'Link berhasil diupdate!' : 'Link berhasil disimpan!', 'success');
               this.fetchLinks();
-            } else { this.showToast(data.message || 'Gagal menyimpan link.', 'error'); }
-          } catch { this.showToast('Gagal terhubung ke server.', 'error'); }
-          finally  { this.addLoading = false; }
+            } else {
+              this.showToast(data.message || 'Gagal menyimpan link.', 'error');
+            }
+          } catch {
+            this.showToast('Gagal terhubung ke server.', 'error');
+          } finally {
+            this.linkLoading = false;
+          }
         },
 
-        // ---- helpers dengan caching ----
+        openDeleteModal(item) {
+          this.deleteId = item.id;
+          this.showDeleteModal = true;
+        },
+
+        async confirmDelete() {
+          this.deleteLoading = true;
+
+          if (GAS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+            await new Promise(r => setTimeout(r, 500));
+            this.links = this.links.filter(l => l.id != this.deleteId);
+            this.showDeleteModal = false;
+            this.deleteLoading = false;
+            this.showToast('Link berhasil dihapus!', 'success');
+            return;
+          }
+
+          try {
+            const res = await fetch(GAS_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'text/plain' },
+              body: JSON.stringify({
+                action: 'deleteLink',
+                id: this.deleteId,
+                username: this.currentUser
+              }),
+            });
+            const data = await res.json();
+            if (data.status === 'success') {
+              this.showDeleteModal = false;
+              this.showToast('Link berhasil dihapus!', 'success');
+              this.fetchLinks();
+            } else {
+              this.showToast(data.message || 'Gagal menghapus link.', 'error');
+            }
+          } catch {
+            this.showToast('Gagal terhubung ke server.', 'error');
+          } finally {
+            this.deleteLoading = false;
+            this.deleteId = null;
+          }
+        },
+
         getDomain(url) {
           try { return new URL(url).hostname.replace('www.',''); } catch { return ''; }
         },
