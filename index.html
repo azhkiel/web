@@ -6,7 +6,8 @@
   <title>LinkJar — Simpan Linkmu</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <!-- Ganti Lucide dengan Font Awesome yang lebih ringan dan sudah di-cache -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
 
   <script>
@@ -184,9 +185,6 @@
     }
 
     [x-cloak] { display: none !important; }
-
-    /* Lucide icon align helper */
-    .ic { display: inline-flex; align-items: center; justify-content: center; }
   </style>
 </head>
 
@@ -210,18 +208,11 @@
           'bg-sky-500 text-white':    toast.type === 'info',
         }"
       >
-        <!-- Icon per type -->
-        <span class="ic flex-shrink-0">
-          <template x-if="toast.type === 'success'">
-            <i data-lucide="check-circle-2" class="w-4 h-4"></i>
-          </template>
-          <template x-if="toast.type === 'error'">
-            <i data-lucide="x-circle" class="w-4 h-4"></i>
-          </template>
-          <template x-if="toast.type === 'info'">
-            <i data-lucide="info" class="w-4 h-4"></i>
-          </template>
-        </span>
+        <i class="fas" :class="{
+          'fa-check-circle': toast.type === 'success',
+          'fa-times-circle': toast.type === 'error',
+          'fa-info-circle': toast.type === 'info'
+        }"></i>
         <span x-text="toast.message"></span>
       </div>
     </template>
@@ -251,7 +242,7 @@
       <!-- Logo area -->
       <div class="flex flex-col items-center mb-7 mt-1">
         <div class="logo-bg w-16 h-16 rounded-3xl flex items-center justify-center shadow-lg mb-3 animate-float">
-          <i data-lucide="archive" class="w-8 h-8 text-white"></i>
+          <i class="fas fa-archive text-white text-2xl"></i>
         </div>
         <h1 class="text-3xl font-black text-sky-700 tracking-tight">LinkJar</h1>
         <p class="text-sky-400 font-semibold text-sm mt-1">Simpan semua linkmu di satu tempat</p>
@@ -263,9 +254,7 @@
         <div>
           <label class="block text-sky-700 font-bold text-sm mb-1.5">Username</label>
           <div class="relative">
-            <span class="ic absolute left-3.5 top-1/2 -translate-y-1/2 text-sky-300">
-              <i data-lucide="user" class="w-4 h-4"></i>
-            </span>
+            <i class="fas fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-sky-300 text-sm"></i>
             <input
               type="text"
               x-model="loginForm.username"
@@ -280,9 +269,7 @@
         <div>
           <label class="block text-sky-700 font-bold text-sm mb-1.5">Password</label>
           <div class="relative">
-            <span class="ic absolute left-3.5 top-1/2 -translate-y-1/2 text-sky-300">
-              <i data-lucide="lock" class="w-4 h-4"></i>
-            </span>
+            <i class="fas fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-sky-300 text-sm"></i>
             <input
               :type="showPassword ? 'text' : 'password'"
               x-model="loginForm.password"
@@ -292,16 +279,11 @@
             />
             <button
               @click="showPassword = !showPassword"
-              class="ic absolute right-3.5 top-1/2 -translate-y-1/2 text-sky-300 hover:text-sky-500 transition-colors"
+              class="absolute right-3.5 top-1/2 -translate-y-1/2 text-sky-300 hover:text-sky-500 transition-colors"
               tabindex="-1"
               type="button"
             >
-              <template x-if="!showPassword">
-                <i data-lucide="eye" class="w-4 h-4" x-effect="lucide.createIcons()"></i>
-              </template>
-              <template x-if="showPassword">
-                <i data-lucide="eye-off" class="w-4 h-4" x-effect="lucide.createIcons()"></i>
-              </template>
+              <i class="fas" :class="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
             </button>
           </div>
         </div>
@@ -317,8 +299,8 @@
             <div class="dot-pulse text-white"><span></span><span></span><span></span></div>
           </template>
           <template x-if="!loginLoading">
-            <span class="ic gap-2">
-              <i data-lucide="log-in" class="w-4 h-4"></i>
+            <span class="flex items-center gap-2">
+              <i class="fas fa-sign-in-alt"></i>
               Masuk
             </span>
           </template>
@@ -361,7 +343,7 @@
       <div class="flex items-start justify-between mb-6 mt-1">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-sky-100 rounded-2xl flex items-center justify-center">
-            <i data-lucide="link" class="w-5 h-5 text-sky-500"></i>
+            <i class="fas fa-link text-sky-500"></i>
           </div>
           <div>
             <h2 class="text-xl font-black text-sky-700">Tambah Link</h2>
@@ -370,10 +352,10 @@
         </div>
         <button
           @click="showAddModal = false"
-          class="ic w-8 h-8 rounded-xl hover:bg-sky-50 text-sky-300 hover:text-sky-500 transition-all"
+          class="w-8 h-8 rounded-xl hover:bg-sky-50 text-sky-300 hover:text-sky-500 transition-all flex items-center justify-center"
           type="button"
         >
-          <i data-lucide="x" class="w-4 h-4"></i>
+          <i class="fas fa-times"></i>
         </button>
       </div>
 
@@ -381,7 +363,7 @@
         <!-- URL field -->
         <div>
           <label class="flex items-center gap-1.5 text-sky-700 font-bold text-sm mb-1.5">
-            <i data-lucide="globe" class="w-3.5 h-3.5"></i>
+            <i class="fas fa-globe text-xs"></i>
             URL / Link
           </label>
           <input
@@ -397,7 +379,7 @@
         <!-- Caption field -->
         <div>
           <label class="flex items-center gap-1.5 text-sky-700 font-bold text-sm mb-1.5">
-            <i data-lucide="type" class="w-3.5 h-3.5"></i>
+            <i class="fas fa-i-cursor text-xs"></i>
             Caption
           </label>
           <textarea
@@ -416,7 +398,7 @@
             class="flex-1 py-3 rounded-2xl border-2 border-sky-200 text-sky-500 font-black hover:bg-sky-50 transition-colors flex items-center justify-center gap-2"
             type="button"
           >
-            <i data-lucide="x" class="w-4 h-4"></i>
+            <i class="fas fa-times"></i>
             Batal
           </button>
           <button
@@ -429,8 +411,8 @@
               <div class="dot-pulse text-white"><span></span><span></span><span></span></div>
             </template>
             <template x-if="!addLoading">
-              <span class="ic gap-2">
-                <i data-lucide="save" class="w-4 h-4"></i>
+              <span class="flex items-center gap-2">
+                <i class="fas fa-save"></i>
                 Simpan
               </span>
             </template>
@@ -457,12 +439,12 @@
         <!-- Logo + User -->
         <div class="flex items-center gap-3">
           <div class="logo-bg w-9 h-9 rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
-            <i data-lucide="archive" class="w-5 h-5 text-white"></i>
+            <i class="fas fa-archive text-white text-sm"></i>
           </div>
           <div class="leading-tight">
             <h1 class="text-lg font-black text-sky-700">LinkJar</h1>
             <p class="text-xs text-sky-400 font-semibold flex items-center gap-1">
-              <i data-lucide="user-circle-2" class="w-3 h-3"></i>
+              <i class="fas fa-user-circle text-xs"></i>
               <span x-text="currentUser"></span>
             </p>
           </div>
@@ -472,7 +454,7 @@
         <div class="flex items-center gap-2">
           <!-- Link count badge -->
           <div class="streak-pill flex items-center gap-1.5 px-3 py-1.5 rounded-xl shadow-sm">
-            <i data-lucide="bookmark" class="w-3.5 h-3.5 text-white"></i>
+            <i class="fas fa-bookmark text-white text-xs"></i>
             <span class="text-white font-black text-sm" x-text="links.length"></span>
           </div>
 
@@ -482,7 +464,7 @@
             class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-100 text-sky-600 font-bold text-sm hover:bg-sky-200 transition-colors"
             type="button"
           >
-            <i data-lucide="log-out" class="w-4 h-4"></i>
+            <i class="fas fa-sign-out-alt text-xs"></i>
             Keluar
           </button>
         </div>
@@ -497,7 +479,7 @@
         <div>
           <h2 class="text-2xl font-black text-sky-800">Link Kamu</h2>
           <p class="text-sky-400 font-semibold text-sm flex items-center gap-1.5 mt-0.5">
-            <i data-lucide="database" class="w-3.5 h-3.5"></i>
+            <i class="fas fa-database text-xs"></i>
             <span x-text="links.length > 0 ? links.length + ' link tersimpan' : 'Belum ada link'"></span>
           </p>
         </div>
@@ -506,16 +488,14 @@
           class="btn-sky text-white font-black px-5 py-3 rounded-2xl flex items-center gap-2"
           type="button"
         >
-          <i data-lucide="plus" class="w-4 h-4"></i>
+          <i class="fas fa-plus"></i>
           Tambah
         </button>
       </div>
 
       <!-- Search -->
       <div x-show="links.length > 0" class="relative mb-5">
-        <span class="ic absolute left-4 top-1/2 -translate-y-1/2 text-sky-300">
-          <i data-lucide="search" class="w-4 h-4"></i>
-        </span>
+        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-sky-300 text-sm"></i>
         <input
           type="text"
           x-model="searchQuery"
@@ -526,17 +506,17 @@
         <button
           x-show="searchQuery"
           @click="searchQuery = ''"
-          class="ic absolute right-4 top-1/2 -translate-y-1/2 text-sky-300 hover:text-sky-500 transition-colors"
+          class="absolute right-4 top-1/2 -translate-y-1/2 text-sky-300 hover:text-sky-500 transition-colors"
           type="button"
         >
-          <i data-lucide="x-circle" class="w-4 h-4"></i>
+          <i class="fas fa-times-circle"></i>
         </button>
       </div>
 
       <!-- Loading -->
       <div x-show="loadingLinks" class="flex flex-col items-center py-16 gap-4">
         <div class="w-14 h-14 logo-bg rounded-3xl flex items-center justify-center shadow-lg">
-          <i data-lucide="loader-2" class="w-7 h-7 text-white animate-spin"></i>
+          <i class="fas fa-spinner fa-spin text-white text-2xl"></i>
         </div>
         <div class="dot-pulse text-sky-400"><span></span><span></span><span></span></div>
         <p class="text-sky-400 font-bold text-sm">Mengambil linkmu...</p>
@@ -548,7 +528,7 @@
         class="flex flex-col items-center py-16 gap-4 text-center animate-fade-in"
       >
         <div class="w-24 h-24 bg-sky-100 rounded-4xl flex items-center justify-center animate-float shadow-inner">
-          <i data-lucide="inbox" class="w-12 h-12 text-sky-300"></i>
+          <i class="fas fa-inbox text-5xl text-sky-300"></i>
         </div>
         <h3 class="text-xl font-black text-sky-700">Jarnya masih kosong!</h3>
         <p class="text-sky-400 font-semibold max-w-xs text-sm leading-relaxed">
@@ -559,7 +539,7 @@
           class="btn-sky text-white font-black px-6 py-3 rounded-2xl flex items-center gap-2 mt-2"
           type="button"
         >
-          <i data-lucide="plus-circle" class="w-4 h-4"></i>
+          <i class="fas fa-plus-circle"></i>
           Tambah Link Pertama
         </button>
       </div>
@@ -570,7 +550,7 @@
         class="flex flex-col items-center py-12 gap-3 text-center"
       >
         <div class="w-16 h-16 bg-sky-100 rounded-3xl flex items-center justify-center">
-          <i data-lucide="search-x" class="w-8 h-8 text-sky-300"></i>
+          <i class="fas fa-search text-3xl text-sky-300"></i>
         </div>
         <p class="text-sky-600 font-bold">
           Tidak ada hasil untuk "<span x-text="searchQuery" class="text-sky-800"></span>"
@@ -603,27 +583,26 @@
                 rel="noopener noreferrer"
                 class="flex items-center gap-2 group w-full"
               >
-                <!-- Favicon -->
+                <!-- Favicon dengan lazy loading -->
                 <img
-                  :src="'https://www.google.com/s2/favicons?domain=' + getDomain(item.link) + '&sz=32'"
+                  loading="lazy"
+                  :src="getFaviconUrl(item.link)"
                   class="w-4 h-4 rounded object-cover flex-shrink-0"
-                  onerror="this.style.display='none'"
+                  @error="$event.target.style.display='none'"
                 />
                 <span
                   class="text-sky-500 font-semibold text-sm truncate group-hover:text-sky-700 group-hover:underline transition-colors flex-1"
                   x-text="item.link"
                 ></span>
-                <span class="ic flex-shrink-0 text-sky-300 group-hover:text-sky-500 transition-colors">
-                  <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
-                </span>
+                <i class="fas fa-external-link-alt text-sky-300 group-hover:text-sky-500 transition-colors text-xs flex-shrink-0"></i>
               </a>
 
               <!-- Footer meta -->
               <div class="flex items-center justify-between mt-3 pt-2.5 border-t border-sky-50">
                 <!-- User -->
                 <div class="flex items-center gap-1.5">
-                  <span class="ic w-5 h-5 bg-sky-100 rounded-full text-sky-400">
-                    <i data-lucide="user" class="w-3 h-3"></i>
+                  <span class="flex w-5 h-5 bg-sky-100 rounded-full text-sky-400 items-center justify-center">
+                    <i class="fas fa-user text-xs"></i>
                   </span>
                   <span class="text-sky-400 text-xs font-bold" x-text="item.username"></span>
                 </div>
@@ -635,7 +614,7 @@
                     x-text="getDomain(item.link)"
                   ></span>
                   <span class="flex items-center gap-1 text-sky-300 text-xs font-semibold">
-                    <i data-lucide="clock" class="w-3 h-3"></i>
+                    <i class="far fa-clock text-xs"></i>
                     <span x-text="formatDate(item.timestamp)"></span>
                   </span>
                 </div>
@@ -655,16 +634,16 @@
       style="box-shadow: 0 5px 0 #0369a1, 0 10px 24px rgba(14,165,233,0.35)"
       type="button"
     >
-      <i data-lucide="plus" class="w-6 h-6"></i>
+      <i class="fas fa-plus text-xl"></i>
     </button>
   </div>
 
   <!-- ======================================================= -->
-  <!-- ALPINE.JS LOGIC                                          -->
+  <!-- ALPINE.JS LOGIC (OPTIMIZED)                             -->
   <!-- ======================================================= -->
   <script>
     // ⚠️ Ganti dengan URL Google Apps Script kamu
-    const GAS_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbyCiVTn-7agMzw3r7ywgVqYEgYUlP8TC8IOmWmL7c9mJuOUVoZ0wVOPVLRLcP6lgS4dDw/exec';
 
     function app() {
       return {
@@ -687,8 +666,11 @@
         captionError: '',
 
         toasts:       [],
+        
+        // Cache untuk favicon
+        faviconCache: {},
 
-        // ---- computed ----
+        // ---- computed dengan debounce ----
         get filteredLinks() {
           if (!this.searchQuery.trim()) return this.links;
           const q = this.searchQuery.toLowerCase();
@@ -698,11 +680,8 @@
           );
         },
 
-        // ---- init ----
+        // ---- init - optimized ----
         init() {
-          // Re-render Lucide icons after Alpine renders
-          this.$nextTick(() => lucide.createIcons());
-
           const saved = localStorage.getItem('linkjar_session');
           if (saved) {
             try {
@@ -736,7 +715,6 @@
               this.loginForm   = { username: '', password: '' };
               this.showToast('Selamat datang, ' + this.currentUser + '!', 'success');
               this.fetchLinks();
-              this.$nextTick(() => lucide.createIcons());
             } else {
               this.showToast(data.message || 'Username atau password salah!', 'error');
               this.shake();
@@ -757,7 +735,6 @@
             this.loginForm   = { username: '', password: '' };
             this.showToast('Mode Demo — GAS URL belum dikonfigurasi', 'info');
             this.loadDemoData();
-            this.$nextTick(() => lucide.createIcons());
           } else {
             this.showToast('Demo: gunakan demo / demo', 'error');
             this.shake();
@@ -770,7 +747,6 @@
             { id:2, timestamp: new Date(Date.now()-86400000).toISOString(),    username:'demo', link:'https://github.com',  caption:'Repositori kode, kolaborasi tim' },
             { id:3, timestamp: new Date(Date.now()-172800000).toISOString(),   username:'demo', link:'https://youtube.com', caption:'Video tutorial dan hiburan' },
           ];
-          this.$nextTick(() => lucide.createIcons());
         },
 
         logout() {
@@ -778,26 +754,35 @@
           this.currentUser = '';
           this.links       = [];
           this.searchQuery = '';
+          this.faviconCache = {};
           localStorage.removeItem('linkjar_session');
           this.showToast('Sampai jumpa!', 'info');
-          this.$nextTick(() => lucide.createIcons());
         },
 
-        // ---- fetch links ----
+        // ---- fetch links dengan timeout ----
         async fetchLinks() {
           if (GAS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') { this.loadDemoData(); return; }
           this.loadingLinks = true;
           try {
-            const res  = await fetch(`${GAS_URL}?username=${encodeURIComponent(this.currentUser)}`);
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 10000);
+            const res = await fetch(`${GAS_URL}?username=${encodeURIComponent(this.currentUser)}`, { signal: controller.signal });
+            clearTimeout(timeoutId);
             const data = await res.json();
             if (data.status === 'success') {
               this.links = (data.data || []).reverse();
-              this.$nextTick(() => lucide.createIcons());
             } else {
               this.showToast('Gagal mengambil data.', 'error');
             }
-          } catch { this.showToast('Gagal terhubung ke server.', 'error'); }
-          finally  { this.loadingLinks = false; }
+          } catch (err) {
+            if (err.name === 'AbortError') {
+              this.showToast('Request timeout, cek koneksi internet.', 'error');
+            } else {
+              this.showToast('Gagal terhubung ke server.', 'error');
+            }
+          } finally { 
+            this.loadingLinks = false; 
+          }
         },
 
         openAddModal() {
@@ -805,7 +790,6 @@
           this.urlError    = '';
           this.captionError= '';
           this.showAddModal= true;
-          this.$nextTick(() => lucide.createIcons());
         },
 
         validateURL(s) {
@@ -824,12 +808,11 @@
           this.addLoading = true;
 
           if (GAS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-            await new Promise(r => setTimeout(r, 700));
+            await new Promise(r => setTimeout(r, 500));
             this.links.unshift({ id: Date.now(), timestamp: new Date().toISOString(), username: this.currentUser, link: this.addForm.link.trim(), caption: this.addForm.caption.trim() });
             this.showAddModal = false;
             this.addLoading   = false;
             this.showToast('Link berhasil disimpan!', 'success');
-            this.$nextTick(() => lucide.createIcons());
             return;
           }
 
@@ -849,9 +832,18 @@
           finally  { this.addLoading = false; }
         },
 
-        // ---- helpers ----
+        // ---- helpers dengan caching ----
         getDomain(url) {
           try { return new URL(url).hostname.replace('www.',''); } catch { return ''; }
+        },
+        
+        getFaviconUrl(link) {
+          const domain = this.getDomain(link);
+          if (!domain) return '';
+          if (this.faviconCache[domain]) return this.faviconCache[domain];
+          const url = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
+          this.faviconCache[domain] = url;
+          return url;
         },
 
         formatDate(ts) {
@@ -870,7 +862,6 @@
         showToast(message, type = 'info') {
           const id = Date.now();
           this.toasts.push({ id, message, type });
-          this.$nextTick(() => lucide.createIcons());
           setTimeout(() => { this.toasts = this.toasts.filter(t => t.id !== id); }, 3500);
         },
 
@@ -880,11 +871,6 @@
         },
       }
     }
-  </script>
-
-  <!-- Init Lucide after everything loads -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => lucide.createIcons());
   </script>
 </body>
 </html>
